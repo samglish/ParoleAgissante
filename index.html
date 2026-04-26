@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parole Agissante — Église de Toutes les Nations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:       #C9971A;
+      --gold-light: #F0C84A;
+      --gold-dim:   rgba(201,151,26,0.18);
+      --gold-border:rgba(201,151,26,0.30);
+      --navy:       #09142A;
+      --navy-mid:   #0F1E38;
+      --navy-card:  #0D1A30;
+      --cream:      #EDE8DC;
+      --muted:      #7A8494;
+      --text:       #D6CEBC;
+      --serif:      'Playfair Display', Georgia, serif;
+      --sans:       'Montserrat', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--navy);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    button { font-family: var(--sans); cursor: pointer; border: none; outline: none; }
+    input { font-family: var(--sans); outline: none; }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ─── NAVIGATION ─────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9,20,42,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-shield {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-text {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo-sub {
+      font-size: 9px;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold-light); background: var(--gold-dim); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 80px 40px 64px;
+      text-align: center;
+      border-bottom: 1px solid var(--gold-border);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(201,151,26,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 20% 0%, rgba(26,10,5,0.8) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* subtle grid texture */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,151,26,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,151,26,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      color: var(--gold);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .hero h1 .gold { color: var(--gold-light); }
+
+    .hero-slogan {
+      font-family: var(--serif);
+      font-size: 15px;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 28px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border-radius: 4px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--gold-border);
+      color: var(--gold-light);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border-radius: 4px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-outline:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(201,151,26,0.15);
+    }
+
+    .stat-val {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    .stat-lbl {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* ─── QUICK ACCESS ────────────────────────────────────── */
+    .quick {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .quick-item {
+      padding: 28px 20px;
+      text-align: center;
+      border-right: 1px solid var(--gold-border);
+      background: var(--navy-mid);
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quick-item:last-child { border-right: none; }
+    .quick-item:hover { background: #11224A; }
+
+    .quick-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.25s;
+    }
+
+    .quick-item:hover::after { transform: scaleX(1); }
+
+    .quick-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+
+    .quick-icon svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    .quick-title {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+
+    .quick-sub {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── SECTION DIVIDER ─────────────────────────────────── */
+    .sec-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 32px 40px 20px;
+    }
+
+    .sec-line { flex: 1; height: 1px; background: rgba(201,151,26,0.18); }
+
+    .sec-title {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ─── LIVRE DU MOIS ───────────────────────────────────── */
+    .livre-section {
+      padding: 0 40px 40px;
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    .livre-cover {
+      width: 110px;
+      height: 154px;
+      flex-shrink: 0;
+      border-radius: 4px 8px 8px 4px;
+      background: linear-gradient(145deg, #7A1A1A 0%, #3D0D0D 40%, #C9971A 100%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 4px 6px 24px rgba(0,0,0,0.5), -2px 0 8px rgba(0,0,0,0.4);
+    }
+
+    .livre-spine {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 10px;
+      background: rgba(0,0,0,0.35);
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .livre-cover-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 14px 14px 22px;
+    }
+
+    .livre-cover-title {
+      font-family: var(--serif);
+      font-size: 9px;
+      font-weight: 700;
+      color: #F5D060;
+      text-align: center;
+      line-height: 1.5;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .livre-info { flex: 1; }
+
+    .livre-badge {
+      display: inline-block;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      color: var(--gold);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
+
+    .livre-title {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .livre-auteur {
+      font-size: 11px;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    .livre-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .livre-formats {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .format-tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      border: 1px solid var(--gold-border);
+      color: var(--muted);
+    }
+
+    .format-tag.active {
+      background: var(--gold-dim);
+      color: var(--gold-light);
+      border-color: var(--gold);
+    }
+
+    .livre-price {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 14px;
+    }
+
+    .livre-price .old {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-left: 8px;
+    }
+
+    /* ─── PODCASTS ────────────────────────────────────────── */
+    .pods-section { padding: 0 40px 40px; }
+
+    .pod-item {
+      background: var(--navy-card);
+      border: 1px solid rgba(201,151,26,0.12);
+      border-radius: 6px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .pod-item:hover {
+      border-color: rgba(201,151,26,0.4);
+      background: #0F1E38;
+    }
+
+    .pod-play {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .pod-item:hover .pod-play { background: var(--gold-light); transform: scale(1.05); }
+
+    .pod-play svg { width: 14px; height: 14px; fill: var(--navy); margin-left: 2px; }
+
+    .pod-info { flex: 1; }
+
+    .pod-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cream);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .pod-meta {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .pod-dur {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    /* ─── BLOG GRID ───────────────────────────────────────── */
+    .blog-section { padding: 0 40px 40px; }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .blog-card {
+      background: var(--navy-card);
+      border: 1px solid rgba(201,151,26,0.12);
+      border-radius: 6px;
+      padding: 18px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blog-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .blog-card:hover { border-color: rgba(201,151,26,0.35); background: #0F1E38; }
+    .blog-card:hover::before { opacity: 1; }
+
+    .blog-cat {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .blog-title {
+      font-family: var(--serif);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+
+    .blog-date {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── VIDEO SECTION ───────────────────────────────────── */
+    .video-section { padding: 0 40px 40px; }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .video-card {
+      background: var(--navy-card);
+      border: 1px solid rgba(201,151,26,0.12);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .video-card:hover { border-color: rgba(201,151,26,0.4); }
+
+    .video-thumb {
+      height: 90px;
+      background: linear-gradient(135deg, #0D1A30, #1A0A05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .video-play-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(201,151,26,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-play-btn svg { width: 12px; height: 12px; fill: var(--navy); margin-left: 2px; }
+
+    .video-info { padding: 10px 12px; }
+
+    .video-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--cream);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .video-meta { font-size: 9px; color: var(--muted); }
+
+    /* ─── ABOUT ───────────────────────────────────────────── */
+    .about-section {
+      padding: 0 40px 40px;
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .about-text { flex: 1; }
+
+    .about-name {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+
+    .about-role {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .about-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .about-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pillar {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--navy-card);
+      border-left: 2px solid var(--gold);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .pillar-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gold-light);
+      margin-bottom: 2px;
+    }
+
+    .pillar-desc { font-size: 10px; color: var(--muted); }
+
+    .about-shield {
+      width: 160px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .shield-placeholder {
+      width: 140px; height: 140px;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shield-placeholder svg { width: 60px; height: 60px; stroke: var(--gold); fill: none; stroke-width: 1; }
+
+    .shield-caption {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ─── NEWSLETTER ──────────────────────────────────────── */
+    .newsletter {
+      margin: 0 40px 40px;
+      background: linear-gradient(135deg, var(--navy-mid) 0%, #0D1A30 100%);
+      border: 1px solid var(--gold-border);
+      border-radius: 8px;
+      padding: 32px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .newsletter::before {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: rgba(201,151,26,0.06);
+      pointer-events: none;
+    }
+
+    .nl-title {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+
+    .nl-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.65;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .nl-form {
+      display: flex;
+      gap: 10px;
+      max-width: 500px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nl-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,151,26,0.25);
+      border-radius: 4px;
+      padding: 10px 14px;
+      color: var(--cream);
+      font-size: 12px;
+      flex: 1;
+      min-width: 150px;
+      transition: border-color 0.2s;
+    }
+
+    .nl-input:focus { border-color: var(--gold); }
+    .nl-input::placeholder { color: var(--muted); }
+
+    .nl-btn {
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .nl-btn:hover { background: var(--gold-light); }
+
+    .nl-gift {
+      margin-top: 14px;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .nl-gift strong { color: var(--gold); font-weight: 600; }
+
+    /* ─── DONS ────────────────────────────────────────────── */
+    .dons-section {
+      padding: 0 40px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .don-card {
+      background: var(--navy-card);
+      border: 1px solid rgba(201,151,26,0.12);
+      border-radius: 6px;
+      padding: 20px;
+    }
+
+    .don-title {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+
+    .don-desc { font-size: 11px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+
+    .don-methods { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+
+    .don-method {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      color: var(--gold);
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    .footer {
+      background: #060D1B;
+      border-top: 2px solid var(--gold);
+      padding: 36px 40px 24px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+
+    .footer-brand-name {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+
+    .footer-brand-sub {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .footer-brand-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .footer-col-title {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .footer-links-list { display: flex; flex-direction: column; gap: 7px; }
+
+    .footer-links-list a {
+      font-size: 11px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .footer-links-list a:hover { color: var(--gold-light); }
+
+    .footer-bottom {
+      padding-top: 20px;
+      border-top: 1px solid rgba(201,151,26,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-copy {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .footer-socials { display: flex; gap: 8px; }
+
+    .social-btn {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 3px;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      color: var(--gold);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .social-btn:hover { background: var(--gold); color: var(--navy); }
+
+    /* ─── FLOATING PLAYER ─────────────────────────────────── */
+    .player {
+      position: sticky;
+      bottom: 0;
+      z-index: 90;
+      background: rgba(9,20,42,0.97);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--gold);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .player-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .player-btn:hover { background: var(--gold-light); }
+    .player-btn svg { width: 12px; height: 12px; fill: var(--navy); margin-left: 2px; }
+
+    .player-info { flex: 1; }
+
+    .player-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2px;
+    }
+
+    .player-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--cream);
+    }
+
+    .player-progress {
+      height: 2px;
+      background: rgba(201,151,26,0.18);
+      border-radius: 1px;
+      margin-top: 5px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .player-bar {
+      height: 100%;
+      width: 35%;
+      background: var(--gold);
+      border-radius: 1px;
+      transition: width 0.1s;
+    }
+
+    .player-controls { display: flex; gap: 6px; align-items: center; }
+
+    .player-time {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .hero { padding: 48px 20px 40px; }
+      .hero h1 { font-size: 34px; }
+      .hero-stats { gap: 24px; }
+      .quick { grid-template-columns: repeat(3, 1fr); }
+      .quick-item { padding: 18px 10px; }
+      .sec-divider, .livre-section, .pods-section, .blog-section, .video-section, .about-section, .dons-section { padding-left: 20px; padding-right: 20px; }
+      .newsletter { margin: 0 20px 32px; padding: 24px 20px; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-section { flex-direction: column; }
+      .about-shield { width: 100%; flex-direction: row; align-items: center; gap: 16px; }
+      .dons-section { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .footer { padding: 28px 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <svg class="nav-shield" viewBox="0 0 48 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 2L4 10V28C4 39 13 48 24 52C35 48 44 39 44 28V10L24 2Z" fill="#C9971A" opacity="0.15" stroke="#C9971A" stroke-width="1.5"/>
+        <path d="M24 8L9 14.5V28C9 36.5 15.5 43.5 24 47C32.5 43.5 39 36.5 39 28V14.5L24 8Z" fill="#C9971A" opacity="0.08"/>
+        <line x1="24" y1="12" x2="24" y2="44" stroke="#C9971A" stroke-width="1" opacity="0.5"/>
+        <circle cx="24" cy="28" r="5" stroke="#C9971A" stroke-width="1" opacity="0.6"/>
+      </svg>
+      <div>
+        <div class="nav-logo-text">Parole Agissante</div>
+        <div class="nav-logo-sub">Église de Toutes les Nations</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#accueil">Accueil</a>
+      <a href="#medias">Médias</a>
+      <a href="#blog">Enseignements</a>
+      <a href="#boutique">Librairie</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-cta">Soutenir la mission</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="accueil">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        Parole Agissante &nbsp;·&nbsp; Ébolowa, Cameroun
+      </div>
+      <h1><span class="gold">Écoutez.</span> Lisez.<br><span class="gold">Vivez.</span></h1>
+      <p class="hero-slogan">Forgez votre foi avec la puissance de la Parole Agissante.</p>
+      <div class="hero-btns">
+        <button class="btn-primary">Découvrir la librairie</button>
+        <button class="btn-outline">Écouter les podcasts</button>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-val">97+</div>
+          <div class="stat-lbl">Membres</div>
+        </div>
+        <div>
+          <div class="stat-val">14+</div>
+          <div class="stat-lbl">Catégories</div>
+        </div>
+        <div>
+          <div class="stat-val">2011</div>
+          <div class="stat-lbl">Depuis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK ACCESS -->
+  <div class="quick">
+    <div class="quick-item">
+      <div class="quick-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      </div>
+      <div class="quick-title">Librairie</div>
+      <div class="quick-sub">Équipez-vous avec nos ouvrages</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg>
+      </div>
+      <div class="quick-title">Podcasts</div>
+      <div class="quick-sub">Écoutez la Parole où que vous soyez</div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon">
+        <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <div class="quick-title">Vidéos</div>
+      <div class="quick-sub">Vivez les temps forts en images</div>
+    </div>
+  </div>
+
+  <!-- LIVRE DU MOIS -->
+  <div class="sec-divider" id="boutique">
+    <div class="sec-line"></div>
+    <div class="sec-title">Livre du mois</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="livre-section">
+    <div class="livre-cover">
+      <div class="livre-spine"></div>
+      <div class="livre-cover-inner">
+        <div class="livre-cover-title">La Puissance de la Parole Agissante</div>
+      </div>
+    </div>
+    <div class="livre-info">
+      <div class="livre-badge">Nouveauté</div>
+      <div class="livre-title">La Puissance de la Parole Agissante</div>
+      <div class="livre-auteur">Pasteur Romuald Guy AMBENA</div>
+      <div class="livre-desc">Un ouvrage fondamental pour forger une foi inébranlable et laisser la Parole de Dieu transformer votre quotidien. À la fois rigoureux et vivant, ce livre est un pont entre les textes anciens et les défis du monde moderne.</div>
+      <div class="livre-formats">
+        <div class="format-tag active">Livre papier</div>
+        <div class="format-tag">E-book PDF</div>
+        <div class="format-tag">Livre audio</div>
+      </div>
+      <div class="livre-price">3 500 FCFA <span class="old">4 500 FCFA</span></div>
+      <button class="btn-primary">Acheter maintenant</button>
+    </div>
+  </div>
+
+  <!-- PODCASTS -->
+  <div class="sec-divider" id="medias">
+    <div class="sec-line"></div>
+    <div class="sec-title">Derniers podcasts</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="pods-section">
+    <div class="pod-item">
+      <div class="pod-play">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <div class="pod-info">
+        <div class="pod-title">Le danger d'avoir un pied dedans et un pied dehors</div>
+        <div class="pod-meta">Prédications &nbsp;·&nbsp; Actes 20 : 7-12</div>
+      </div>
+      <div class="pod-dur">24 : 15</div>
+    </div>
+    <div class="pod-item">
+      <div class="pod-play">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <div class="pod-info">
+        <div class="pod-title">La puissance de la confession de la foi</div>
+        <div class="pod-meta">Confessions &nbsp;·&nbsp; Romains 10 : 9</div>
+      </div>
+      <div class="pod-dur">18 : 42</div>
+    </div>
+    <div class="pod-item">
+      <div class="pod-play">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <div class="pod-info">
+        <div class="pod-title">Méditation : La parole qui transforme les coeurs</div>
+        <div class="pod-meta">Méditations &nbsp;·&nbsp; Hébreux 4 : 12</div>
+      </div>
+      <div class="pod-dur">12 : 08</div>
+    </div>
+    <div class="pod-item">
+      <div class="pod-play">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <div class="pod-info">
+        <div class="pod-title">La victoire appartient à l'Éternel Dieu</div>
+        <div class="pod-meta">Louanges et Adorations &nbsp;·&nbsp; Psaume 24</div>
+      </div>
+      <div class="pod-dur">31 : 50</div>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="sec-divider" id="blog">
+    <div class="sec-line"></div>
+    <div class="sec-title">Enseignements récents</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="blog-section">
+    <div class="blog-grid">
+      <div class="blog-card">
+        <div class="blog-cat">Méditations</div>
+        <div class="blog-title">Comment puis-je vivre une vie spirituelle équilibrée ?</div>
+        <div class="blog-date">15 avril 2025</div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-cat">Prédications</div>
+        <div class="blog-title">La victoire appartient à l'Éternel Dieu</div>
+        <div class="blog-date">8 avril 2025</div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-cat">Famille et Couples</div>
+        <div class="blog-title">La pureté : une armure pour notre génération</div>
+        <div class="blog-date">2 avril 2025</div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-cat">Parole pratique</div>
+        <div class="blog-title">Cette histoire, c'est ton histoire</div>
+        <div class="blog-date">25 mars 2025</div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-cat">Prières</div>
+        <div class="blog-title">Sujets de prière pour forger votre bouclier spirituel</div>
+        <div class="blog-date">18 mars 2025</div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-cat">Poésie</div>
+        <div class="blog-title">Mettez la patience au travail — Kenneth et Gloria Copeland</div>
+        <div class="blog-date">10 mars 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEOS -->
+  <div class="sec-divider">
+    <div class="sec-line"></div>
+    <div class="sec-title">Vidéos et réels</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="video-section">
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-play-btn">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Enseignement — La Parole qui sauve</div>
+          <div class="video-meta">YouTube &nbsp;·&nbsp; 12 min</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-play-btn">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Concert de gospel — GRAM Ministries</div>
+          <div class="video-meta">YouTube &nbsp;·&nbsp; 45 min</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-play-btn">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Réunion de prière — Ébolowa</div>
+          <div class="video-meta">Instagram Reel &nbsp;·&nbsp; 1 min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- À PROPOS -->
+  <div class="sec-divider">
+    <div class="sec-line"></div>
+    <div class="sec-title">À propos</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="about-section">
+    <div class="about-text">
+      <div class="about-name">Pasteur Romuald Guy AMBENA</div>
+      <div class="about-role">Fondateur de Parole Agissante — Église de Toutes les Nations</div>
+      <p class="about-desc">
+        Juriste privatiste, expert en gestion des Ressources Humaines et ministre de Dieu, le Pasteur Romuald Guy AMBENA a fondé Parole Agissante pour offrir des ressources concrètes à ceux qui désirent forger une foi inébranlable. Son écriture, à la fois rigoureuse et vivante, se veut un pont entre les textes anciens et les défis de notre monde moderne.
+      </p>
+      <p class="about-desc" style="margin-top:-8px">
+        <em style="color:var(--gold);font-style:italic">"Parole Agissante n'est pas seulement un nom, c'est une conviction : la Parole de Dieu n'est pas un texte figé, mais une force vivante qui transforme les cœurs et les circonstances."</em>
+      </p>
+      <div class="about-pillars">
+        <div class="pillar">
+          <div>
+            <div class="pillar-title">Instruire</div>
+            <div class="pillar-desc">À travers nos livres et notre librairie, pour approfondir la connaissance.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <div>
+            <div class="pillar-title">Édifier</div>
+            <div class="pillar-desc">Par nos podcasts et méditations, pour accompagner votre quotidien.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <div>
+            <div class="pillar-title">Partager</div>
+            <div class="pillar-desc">Via nos contenus vidéo et réels, pour diffuser le message au plus grand nombre.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-shield">
+      <div class="shield-placeholder">
+        <!-- Remplacer par le vrai logo PNG ici -->
+        <svg viewBox="0 0 60 68">
+          <path d="M30 3L5 13V34C5 48.5 16 58 30 63C44 58 55 48.5 55 34V13L30 3Z" stroke-width="1.2"/>
+          <line x1="30" y1="16" x2="30" y2="56" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="30" cy="36" r="7" stroke-width="0.8" opacity="0.6"/>
+          <line x1="30" y1="29" x2="30" y2="56" stroke-width="1.5" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="shield-caption">Insérer le logo<br>Bouclier Or (PNG/SVG)</div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <div class="nl-title">Rejoignez la mission — recevez votre bouclier spirituel</div>
+    <p class="nl-sub">Inscrivez-vous et recevez gratuitement le premier chapitre de notre dernier livre en PDF, ainsi qu'une alerte à chaque nouveau podcast ou enseignement.</p>
+    <div class="nl-form">
+      <input class="nl-input" type="text" placeholder="Votre prénom" />
+      <input class="nl-input" type="email" placeholder="Votre adresse e-mail" />
+      <button class="nl-btn">Je m'inscris</button>
+    </div>
+    <p class="nl-gift">Cadeau de bienvenue : <strong>premier chapitre offert en PDF</strong></p>
+  </div>
+
+  <!-- DONS -->
+  <div class="sec-divider" id="contact">
+    <div class="sec-line"></div>
+    <div class="sec-title">Soutenir la mission</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="dons-section">
+    <div class="don-card">
+      <div class="don-title">Faire un don en ligne</div>
+      <p class="don-desc">Votre soutien permet de financer les activités d'évangélisation, les concerts de gospel, l'aide humanitaire et la production de nouveaux enseignements.</p>
+      <div class="don-methods">
+        <div class="don-method">Orange Money</div>
+        <div class="don-method">MTN Mobile Money</div>
+        <div class="don-method">Stripe</div>
+        <div class="don-method">PayPal</div>
+      </div>
+      <button class="btn-primary">Soutenir maintenant</button>
+    </div>
+    <div class="don-card">
+      <div class="don-title">Nous contacter</div>
+      <p class="don-desc">Pour toute question, demande de prière, ou information sur nos activités à Ébolowa et à travers toutes les nations.</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+        <div style="font-size:11px;color:var(--muted)">contact@parole-agissante.org</div>
+        <div style="font-size:11px;color:var(--muted)">boutique@parole-agissante.org</div>
+        <div style="font-size:11px;color:var(--muted)">Ébolowa, Cameroun</div>
+      </div>
+      <button class="btn-outline">Envoyer un message</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Parole Agissante</div>
+        <div class="footer-brand-sub">Église de Toutes les Nations — GRAM Ministries</div>
+        <p class="footer-brand-desc">Que vous soyez un lecteur en quête de profondeur ou un auditeur cherchant un encouragement, ce site est votre maison. Ensemble, laissons la Parole agir.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigation</div>
+        <div class="footer-links-list">
+          <a href="#accueil">Accueil</a>
+          <a href="#medias">Podcasts</a>
+          <a href="#medias">Vidéos</a>
+          <a href="#blog">Enseignements</a>
+          <a href="#boutique">Librairie</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Ressources</div>
+        <div class="footer-links-list">
+          <a href="#">Méditations quotidiennes</a>
+          <a href="#">Sujets de prière</a>
+          <a href="#">Confessions</a>
+          <a href="#">Bibles gratuites</a>
+          <a href="#">Extraits offerts</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Légal</div>
+        <div class="footer-links-list">
+          <a href="#">Mentions légales</a>
+          <a href="#">CGV</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">Cookies</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Parole Agissante — parole-agissante.org — Ébolowa, Cameroun</div>
+      <div class="footer-socials">
+        <div class="social-btn">Facebook</div>
+        <div class="social-btn">YouTube</div>
+        <div class="social-btn">Instagram</div>
+        <div class="social-btn">Spotify</div>
+        <div class="social-btn">Apple Podcasts</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LECTEUR FLOTTANT -->
+  <div class="player">
+    <div class="player-btn">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    </div>
+    <div class="player-info">
+      <div class="player-label">En cours d'écoute</div>
+      <div class="player-title">Le danger d'avoir un pied dedans et un pied dehors</div>
+      <div class="player-progress">
+        <div class="player-bar"></div>
+      </div>
+    </div>
+    <div class="player-time">08 : 32 &nbsp;/&nbsp; 24 : 15</div>
+  </div>
+
+</body>
+</html>
