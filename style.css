@@ -693,7 +693,7 @@
     .about-desc {
       font-size: 12px;
       text-align: justify;
-      color: var(--muted);
+      color: var(--cream);
       line-height: 1.75;
       margin-bottom: 16px;
     }
@@ -721,7 +721,7 @@
       margin-bottom: 2px;
     }
 
-    .pillar-desc { font-size: 10px; color: var(--muted); }
+    .pillar-desc { font-size: 10px; color: var(--cream); }
 
     .about-shield {
       width: 160px;
@@ -785,7 +785,7 @@
 
     .nl-sub {
       font-size: 12px;
-      color: var(--muted);
+      color: var(--cream);
       margin-bottom: 24px;
       line-height: 1.65;
       max-width: 480px;
@@ -834,7 +834,7 @@
     .nl-gift {
       margin-top: 14px;
       font-size: 10px;
-      color: var(--muted);
+      color: var(--cream);
       letter-spacing: 0.04em;
     }
 
@@ -863,7 +863,7 @@
       margin-bottom: 6px;
     }
 
-    .don-desc { font-size: 11px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+    .don-desc { font-size: 11px; color: var(--cream); line-height: 1.6; margin-bottom: 14px; }
 
     .don-methods { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
 
