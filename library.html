@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Librairie — Parole Agissante</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Montserrat', sans-serif;
+  background:#f5f5f0;
+}
+
+/* HEADER */
+header{
+  background:#09142A;
+  color:white;
+  padding:20px 40px;
+  border-bottom:2px solid #C9971A;
+}
+
+header h1{
+  font-family:'Playfair Display';
+  color:#F0C84A;
+}
+
+/* HERO */
+.hero{
+  padding:40px;
+  background:#09142A;
+  color:white;
+}
+
+/* FILTERS */
+.filters{
+  padding:20px 40px;
+}
+
+.filters button{
+  margin:5px;
+  padding:8px 14px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  background:#eee;
+}
+
+.filters button.active{
+  background:#C9971A;
+  color:white;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+  padding:40px;
+}
+
+/* CARD IMAGE STYLE */
+.card{
+  position:relative;
+  height:180px;
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  align-items:flex-end;
+  padding:20px;
+  color:white;
+  background-size:cover;
+  background-position:center;
+  transition:0.4s;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+}
+
+.card:hover{
+  transform:scale(1.03);
+}
+
+.card-content{
+  position:relative;
+  z-index:2;
+}
+
+.card span{
+  font-size:12px;
+  color:#F0C84A;
+}
+
+.card h3{
+  margin:5px 0;
+  font-size:15px;
+}
+
+.card a{
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 10px;
+  background:#C9971A;
+  color:white;
+  text-decoration:none;
+  border-radius:5px;
+  font-size:12px;
+}
+
+.card a:hover{
+  background:#fff;
+  color:#09142A;
+}
+
+</style>
+</head>
+
+<body>
+
+ <!-- NAVIGATION -->
+  <nav class="nav">
+    <div class="nav-logo">
+    <img src="logo.png" alt="Logo Bouclier Or" style="width:7%;height:7%;object-fit:contain;opacity:0.8"/>
+      <div>
+        <div class="nav-logo-text">PAROLE AGISSANTE</div>
+        <div class="nav-logo-sub">Église de Toutes les Nations</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#accueil">Accueil</a>
+      <a href="#medias">Médias</a>
+      <a href="#blog">Enseignements</a>
+      <a href="#boutique">Librairie</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-cta">Soutenir la mission</button>
+  </nav>
+
+<section class="hero">
+  <h2>Librairie Spirituelle</h2>
+  <p>Explorez les enseignements, prières et méditations</p>
+</section>
+
+<div class="filters">
+  <button onclick="filterCat('all')" class="active">Tous</button>
+  <button onclick="filterCat('Famille')">Famille</button>
+  <button onclick="filterCat('Parole')">Parole Pratique</button>
+  <button onclick="filterCat('Confession')">Confessions</button>
+  <button onclick="filterCat('Priere')">Prières</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+
+/* IMAGES PAR CATÉGORIE */
+const images = {
+  Famille: "https://images.unsplash.com/photo-1529634893962-8c3b1c3c0b5c",
+  Parole: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65",
+  Confession: "https://images.unsplash.com/photo-1519491050282-cf00c82424b4",
+  Priere: "https://images.unsplash.com/photo-1506126613408-eca07ce68773"
+};
+
+/* ARTICLES */
+const articles = [
+
+{cat:"Famille", title:"Que pensez-vous d'une femme plus âgée que son mari ?", link:"https://paroleagissante.blog4ever.com/que-pensez-vous-d-une-femme-plus-agee-que-son-mari"},
+{cat:"Famille", title:"Un mariage réussi", link:"https://paroleagissante.blog4ever.com/un-mariage-reussi-donato-anzalone"},
+{cat:"Famille", title:"La communication dans le couple", link:"https://paroleagissante.blog4ever.com/la-communication-dans-le-couple-gem-kakou"},
+{cat:"Famille", title:"Le divorce et le remariage", link:"https://paroleagissante.blog4ever.com/le-divorce-et-le-remariage"},
+
+{cat:"Parole", title:"Rejette la voix de ta chair", link:"https://paroleagissante.blog4ever.com/rejette-la-voix-de-ta-chair-1"},
+{cat:"Parole", title:"Jésus 40 jours dans le désert", link:"https://paroleagissante.blog4ever.com/jesus-40-jours-dans-le-desert-par-jean-pierre-bory"},
+{cat:"Parole", title:"Le plan du salut", link:"https://paroleagissante.blog4ever.com/le-plan-du-salut"},
+{cat:"Parole", title:"Comment devenir chrétien ?", link:"https://paroleagissante.blog4ever.com/comment-devenir-chretien"},
+
+{cat:"Confession", title:"Confessions pour la victoire", link:"https://paroleagissante.blog4ever.com/confessions-pour-la-victoire"},
+{cat:"Confession", title:"Confessions générales", link:"https://paroleagissante.blog4ever.com/confessions-generales"},
+
+{cat:"Priere", title:"Prière de bénédictions", link:"https://paroleagissante.blog4ever.com/priere-de-benedictions"},
+{cat:"Priere", title:"Prière pour la guérison", link:"https://paroleagissante.blog4ever.com/prieres-pour-la-guerison-passages-bibliques-servant-de-socle-dans-nos-prieres-pour-la-guerison"}
+
+];
+
+/* AFFICHAGE */
+const grid = document.getElementById("grid");
+
+function display(list){
+  grid.innerHTML="";
+  list.forEach(a=>{
+    grid.innerHTML += `
+      <div class="card" style="background-image:url('${images[a.cat]}')">
+        <div class="card-content">
+          <span>${a.cat}</span>
+          <h3>${a.title}</h3>
+          <a href="${a.link}" target="_blank">Lire</a>
+        </div>
+      </div>
+    `;
+  });
+}
+
+display(articles);
+
+/* FILTRE */
+function filterCat(cat){
+  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+
+  if(cat==="all"){
+    display(articles);
+  } else {
+    display(articles.filter(a=>a.cat===cat));
+  }
+}
+
+</script>
+
+</body>
+</html>
