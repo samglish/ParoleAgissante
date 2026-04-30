@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact & Dons — Parole Agissante</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── CONTACT PAGE ONLY ──────────────────────────────────── */
+
+    /* Layout principal */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 24px;
+      padding: 32px 40px 48px;
+      align-items: start;
+    }
+
+    /* ── FORMULAIRE ─────────────────────────────────────────── */
+    .form-card {
+      background: var(--navy-mid);
+      border: 1px solid var(--gold-border);
+      border-radius: 10px;
+      padding: 32px;
+    }
+    .form-card-title {
+      font-family: var(--serif);
+      font-size: 20px; font-weight: 700;
+      color: var(--cream); margin-bottom: 4px;
+    }
+    .form-card-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 7px;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,151,26,0.22);
+      border-radius: 5px;
+      padding: 11px 14px;
+      color: var(--cream);
+      font-size: 12px; font-family: var(--sans);
+      outline: none; transition: border-color 0.2s;
+    }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus { border-color: var(--gold); }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: var(--muted); }
+    .form-select { appearance: none; cursor: pointer; }
+    .form-select option { background: var(--navy-mid); color: var(--cream); }
+    .form-textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .form-types { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+    .type-btn {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 7px 14px; border-radius: 4px;
+      background: transparent; border: 1px solid rgba(201,151,26,0.2);
+      color: var(--muted); cursor: pointer; transition: all 0.2s;
+    }
+    .type-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+    .type-btn.active { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+
+    .form-submit {
+      width: 100%;
+      background: var(--gold); color: var(--navy);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 13px; border-radius: 5px;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 8px;
+    }
+    .form-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    .form-privacy { font-size: 10px; color: var(--muted); text-align: center; margin-top: 10px; line-height: 1.5; }
+    .form-privacy a { color: var(--gold); }
+
+    /* ── COLONNE DROITE ─────────────────────────────────────── */
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+    /* Carte Don */
+    .don-main {
+      background: linear-gradient(145deg, var(--navy-mid), #0C1829);
+      border: 1px solid var(--gold-border);
+      border-radius: 10px; padding: 28px;
+      position: relative; overflow: hidden;
+    }
+    .don-main::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: rgba(201,151,26,0.05); pointer-events: none;
+    }
+    .don-main-title { font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px; }
+    .don-main-sub   { font-size: 11px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
+
+    /* Montants */
+    .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    .amount-btn {
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      border-radius: 5px; padding: 10px 6px;
+      text-align: center; cursor: pointer; transition: all 0.2s;
+    }
+    .amount-btn:hover, .amount-btn.active {
+      background: var(--gold); border-color: var(--gold);
+    }
+    .amount-btn:hover .amount-val, .amount-btn.active .amount-val { color: var(--navy); }
+    .amount-btn:hover .amount-lbl, .amount-btn.active .amount-lbl { color: var(--navy); opacity: 0.7; }
+    .amount-val { font-family: var(--serif); font-size: 14px; font-weight: 700; color: var(--gold-light); }
+    .amount-lbl { font-size: 8px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+    .amount-custom {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(201,151,26,0.22);
+      border-radius: 5px; padding: 10px 14px;
+      color: var(--cream); font-size: 12px; font-family: var(--sans);
+      width: 100%; outline: none; margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+    .amount-custom:focus { border-color: var(--gold); }
+    .amount-custom::placeholder { color: var(--muted); }
+
+    /* Méthodes paiement */
+    .pay-methods { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .pay-method-btn {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--navy-card); border: 1px solid rgba(201,151,26,0.15);
+      border-radius: 6px; padding: 11px 14px;
+      cursor: pointer; transition: all 0.2s;
+      width: 100%;
+    }
+    .pay-method-btn:hover, .pay-method-btn.selected {
+      border-color: var(--gold); background: #0F1E38;
+    }
+    .pay-logo {
+      width: 32px; height: 32px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 10px; font-weight: 700;
+    }
+    .pay-name-wrap { flex: 1; text-align: left; }
+    .pay-mname { font-size: 12px; font-weight: 600; color: var(--cream); }
+    .pay-mdesc { font-size: 9px; color: var(--muted); margin-top: 1px; }
+    .pay-check {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 1px solid rgba(201,151,26,0.3);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.2s;
+    }
+    .pay-method-btn.selected .pay-check { background: var(--gold); border-color: var(--gold); }
+    .pay-check-inner { width: 8px; height: 8px; border-radius: 50%; background: var(--navy); opacity: 0; transition: opacity 0.2s; }
+    .pay-method-btn.selected .pay-check-inner { opacity: 1; }
+
+    .btn-don {
+      width: 100%; background: var(--gold); color: var(--navy);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 13px; border-radius: 5px; transition: background 0.2s;
+    }
+    .btn-don:hover { background: var(--gold-light); }
+
+    /* Carte infos */
+    .info-card {
+      background: var(--navy-card);
+      border: 1px solid rgba(201,151,26,0.12);
+      border-radius: 8px; padding: 20px;
+    }
+    .info-card-title { font-family: var(--serif); font-size: 14px; font-weight: 700; color: var(--cream); margin-bottom: 14px; }
+    .info-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid rgba(201,151,26,0.08);
+    }
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-icon {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .info-icon svg { width: 14px; height: 14px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .info-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
+    .info-val   { font-size: 11px; color: var(--cream-dim); line-height: 1.5; }
+
+    /* Carte prière */
+    .prayer-card {
+      background: linear-gradient(135deg, #0A1A0A, #1A2A1A);
+      border: 1px solid rgba(42,120,42,0.3);
+      border-radius: 8px; padding: 20px;
+    }
+    .prayer-card-title { font-family: var(--serif); font-size: 14px; font-weight: 700; color: #90ee90; margin-bottom: 6px; }
+    .prayer-card-sub   { font-size: 11px; color: rgba(144,238,144,0.6); line-height: 1.6; margin-bottom: 14px; }
+    .btn-prayer {
+      width: 100%; background: rgba(42,120,42,0.3); border: 1px solid rgba(42,120,42,0.5);
+      color: #90ee90; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 10px; border-radius: 4px; transition: background 0.2s;
+    }
+    .btn-prayer:hover { background: rgba(42,120,42,0.5); }
+
+    /* Carte localisation */
+    .map-card {
+      background: var(--navy-card);
+      border: 1px solid rgba(201,151,26,0.12);
+      border-radius: 8px; overflow: hidden;
+    }
+    .map-placeholder {
+      height: 160px;
+      background: linear-gradient(135deg, #0C1829, #091424);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      border-bottom: 1px solid rgba(201,151,26,0.12);
+    }
+    .map-placeholder svg { width: 32px; height: 32px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .map-placeholder p { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; }
+    .map-info { padding: 14px 16px; }
+    .map-adresse { font-size: 12px; font-weight: 600; color: var(--cream); margin-bottom: 4px; }
+    .map-sub     { font-size: 10px; color: var(--muted); }
+    .map-btn {
+      display: block; margin: 10px 16px 14px;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 8px 14px; border-radius: 4px; text-align: center;
+      transition: background 0.2s;
+    }
+    .map-btn:hover { background: var(--gold); color: var(--navy); }
+
+    /* Succès message */
+    .form-success {
+      display: none; background: rgba(42,120,42,0.15); border: 1px solid rgba(42,120,42,0.4);
+      border-radius: 6px; padding: 16px; margin-top: 16px;
+      text-align: center; font-size: 12px; color: #90ee90; line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; padding: 24px 20px 40px; }
+      .form-row { grid-template-columns: 1fr; }
+      .amount-grid { grid-template-columns: repeat(3,1fr); }
+    }
+    @media (max-width: 768px) {
+      .contact-layout { padding: 20px 16px 32px; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <img src="logo.png" alt="Parole Agissante"/>
+    <div>
+      <div class="nav-logo-text">Parole Agissante</div>
+      <div class="nav-logo-sub">Église de Toutes les Nations</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="blog.html">Enseignements</a>
+    <a href="podcasts.html">Podcasts</a>
+    <a href="librairie.html">Librairie</a>
+    <a href="contact.html" class="active">Contact</a>
+  </div>
+  <button class="nav-cta">Soutenir la mission</button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="index.html">Accueil</a><span>›</span><span>Contact & Dons</span></div>
+    <h1>Contactez-nous &<br><em>Soutenez la Mission</em></h1>
+    <p>Que ce soit pour une demande de prière, une question sur nos ouvrages, ou pour soutenir financièrement l'oeuvre de Dieu à Ebolowa et au-delà.</p>
+  </div>
+</section>
+
+<!-- LAYOUT PRINCIPAL -->
+<div class="contact-layout">
+
+  <!-- COLONNE GAUCHE — FORMULAIRE -->
+  <div>
+    <div class="form-card">
+      <div class="form-card-title">Envoyez-nous un message</div>
+      <div class="form-card-sub">Notre équipe vous répondra dans les 48 heures. Pour les demandes de prière, votre confidentialité est respectée.</div>
+
+      <div class="form-types">
+        <button class="type-btn active" onclick="selectType(this)">Message général</button>
+        <button class="type-btn" onclick="selectType(this)">Demande de prière</button>
+        <button class="type-btn" onclick="selectType(this)">Commande librairie</button>
+        <button class="type-btn" onclick="selectType(this)">Partenariat</button>
+      </div>
+
+      <div style="height:20px"></div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Prénom</label>
+          <input class="form-input" type="text" placeholder="Votre prénom"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom</label>
+          <input class="form-input" type="text" placeholder="Votre nom"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Adresse e-mail</label>
+        <input class="form-input" type="email" placeholder="votre@email.com"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Pays / Ville</label>
+        <input class="form-input" type="text" placeholder="Ex : Cameroun, Yaoundé"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Sujet</label>
+        <select class="form-select">
+          <option value="">Choisissez un sujet...</option>
+          <option>Demande de prière personnelle</option>
+          <option>Demande de prière pour un proche</option>
+          <option>Question sur un enseignement</option>
+          <option>Commande de livre</option>
+          <option>Don et soutien financier</option>
+          <option>Témoignage</option>
+          <option>Partenariat ministériel</option>
+          <option>Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Votre message</label>
+        <textarea class="form-textarea" placeholder="Écrivez votre message ici..."></textarea>
+      </div>
+
+      <button class="form-submit" onclick="submitForm()">Envoyer le message</button>
+      <div class="form-privacy">En soumettant ce formulaire, vous acceptez notre <a href="#">politique de confidentialité</a>. Vos données ne seront jamais partagées.</div>
+      <div class="form-success" id="formSuccess">
+        Votre message a été envoyé avec succès. Que la grâce de Dieu soit avec vous. Nous vous répondrons dans les 48 heures.
+      </div>
+    </div>
+
+    <!-- RÉSEAUX SOCIAUX -->
+    <div class="sec-divider" style="padding-left:0;padding-right:0;padding-top:28px">
+      <div class="sec-line"></div>
+      <div class="sec-title">Nous suivre</div>
+      <div class="sec-line"></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="#" class="social-btn">Facebook</a>
+      <a href="#" class="social-btn">YouTube</a>
+      <a href="#" class="social-btn">Instagram</a>
+      <a href="#" class="social-btn">Spotify</a>
+      <a href="#" class="social-btn">Apple Podcasts</a>
+      <a href="#" class="social-btn">Twitter / X</a>
+    </div>
+  </div>
+
+  <!-- COLONNE DROITE — DONS + INFOS -->
+  <div class="sidebar">
+
+    <!-- DON -->
+    <div class="don-main">
+      <div class="don-main-title">Soutenir la mission</div>
+      <div class="don-main-sub">Chaque don, quel que soit son montant, contribue à l'évangélisation, aux concerts de gospel, à l'aide humanitaire et à la production de nouveaux enseignements.</div>
+
+      <div class="amount-grid">
+        <div class="amount-btn" onclick="selectAmount(this, '1000')">
+          <div class="amount-val">1 000</div>
+          <div class="amount-lbl">FCFA</div>
+        </div>
+        <div class="amount-btn active" onclick="selectAmount(this, '2500')">
+          <div class="amount-val">2 500</div>
+          <div class="amount-lbl">FCFA</div>
+        </div>
+        <div class="amount-btn" onclick="selectAmount(this, '5000')">
+          <div class="amount-val">5 000</div>
+          <div class="amount-lbl">FCFA</div>
+        </div>
+        <div class="amount-btn" onclick="selectAmount(this, '10000')">
+          <div class="amount-val">10 000</div>
+          <div class="amount-lbl">FCFA</div>
+        </div>
+        <div class="amount-btn" onclick="selectAmount(this, '25000')">
+          <div class="amount-val">25 000</div>
+          <div class="amount-lbl">FCFA</div>
+        </div>
+        <div class="amount-btn" onclick="selectAmount(this, 'libre')">
+          <div class="amount-val">Libre</div>
+          <div class="amount-lbl">Montant</div>
+        </div>
+      </div>
+
+      <input class="amount-custom" type="number" placeholder="Ou saisissez un montant en FCFA..." id="customAmount"/>
+
+      <div class="pay-methods">
+        <button class="pay-method-btn selected" onclick="selectPay(this)">
+          <div class="pay-logo" style="background:rgba(255,102,0,0.15)">
+            <span style="font-size:9px;font-weight:800;color:#ff6600">OM</span>
+          </div>
+          <div class="pay-name-wrap">
+            <div class="pay-mname">Orange Money</div>
+            <div class="pay-mdesc">Cameroun & Afrique de l'Ouest</div>
+          </div>
+          <div class="pay-check"><div class="pay-check-inner"></div></div>
+        </button>
+        <button class="pay-method-btn" onclick="selectPay(this)">
+          <div class="pay-logo" style="background:rgba(249,197,19,0.15)">
+            <span style="font-size:8px;font-weight:800;color:#f9c513">MTN</span>
+          </div>
+          <div class="pay-name-wrap">
+            <div class="pay-mname">MTN Mobile Money</div>
+            <div class="pay-mdesc">Cameroun & Afrique centrale</div>
+          </div>
+          <div class="pay-check"><div class="pay-check-inner"></div></div>
+        </button>
+        <button class="pay-method-btn" onclick="selectPay(this)">
+          <div class="pay-logo" style="background:rgba(99,91,255,0.15)">
+            <span style="font-size:9px;font-weight:800;color:#635bff">STR</span>
+          </div>
+          <div class="pay-name-wrap">
+            <div class="pay-mname">Stripe</div>
+            <div class="pay-mdesc">Visa / Mastercard — International</div>
+          </div>
+          <div class="pay-check"><div class="pay-check-inner"></div></div>
+        </button>
+        <button class="pay-method-btn" onclick="selectPay(this)">
+          <div class="pay-logo" style="background:rgba(0,156,222,0.15)">
+            <span style="font-size:8px;font-weight:800;color:#009cde">PP</span>
+          </div>
+          <div class="pay-name-wrap">
+            <div class="pay-mname">PayPal</div>
+            <div class="pay-mdesc">Diaspora & transferts internationaux</div>
+          </div>
+          <div class="pay-check"><div class="pay-check-inner"></div></div>
+        </button>
+      </div>
+
+      <button class="btn-don" onclick="processDon()">Faire un don maintenant</button>
+    </div>
+
+    <!-- COORDONNÉES -->
+    <div class="info-card">
+      <div class="info-card-title">Nos coordonnées</div>
+      <div class="info-row">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="info-label">E-mail général</div>
+          <div class="info-val">contact@parole-agissante.org</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="info-label">Librairie & Commandes</div>
+          <div class="info-val">boutique@parole-agissante.org</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.73A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14z"/></svg>
+        </div>
+        <div>
+          <div class="info-label">Téléphone / WhatsApp</div>
+          <div class="info-val">+237 6XX XXX XXX</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="info-label">Adresse</div>
+          <div class="info-val">Ébolowa, Région du Sud<br>Cameroun, Afrique Centrale</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEMANDE DE PRIÈRE -->
+    <div class="prayer-card">
+      <div class="prayer-card-title">Vous avez besoin de prière ?</div>
+      <div class="prayer-card-sub">Soumettez votre sujet de prière à notre équipe pastorale. Nous prions pour chaque demande reçue, dans la confidentialité et la foi.</div>
+      <button class="btn-prayer" onclick="document.querySelector('.type-btn:nth-child(2)').click(); document.querySelector('.form-card').scrollIntoView({behavior:'smooth'})">Soumettre un sujet de prière</button>
+    </div>
+
+    <!-- LOCALISATION -->
+    <div class="map-card">
+      <div class="map-placeholder">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <p>Ébolowa, Cameroun</p>
+      </div>
+      <div class="map-info">
+        <div class="map-adresse">Église Parole Agissante</div>
+        <div class="map-sub">Ébolowa, Région du Sud, Cameroun</div>
+      </div>
+      <a href="https://maps.google.com/?q=Ebolowa,Cameroun" target="_blank" class="map-btn">Ouvrir dans Google Maps</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer-simple">
+  <div>
+    <div class="footer-brand">Parole Agissante</div>
+    <div class="footer-sub">Église de Toutes les Nations · GRAM Ministries · Ébolowa, Cameroun</div>
+  </div>
+  <div class="footer-links">
+    <a href="index.html">Accueil</a>
+    <a href="blog.html">Enseignements</a>
+    <a href="podcasts.html">Podcasts</a>
+    <a href="librairie.html">Librairie</a>
+    <a href="#">Mentions légales</a>
+  </div>
+</footer>
+
+<script>
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function selectAmount(btn, val) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (val === 'libre') {
+    document.getElementById('customAmount').focus();
+  }
+}
+function selectPay(btn) {
+  document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function submitForm() {
+  const success = document.getElementById('formSuccess');
+  success.style.display = 'block';
+  setTimeout(() => { success.style.display = 'none'; }, 6000);
+}
+function processDon() {
+  const active = document.querySelector('.pay-method-btn.selected .pay-mname');
+  const method = active ? active.textContent : 'Mobile Money';
+  alert('Redirection vers ' + method + '...\n\nIntégration CinetPay / Stripe à connecter dans WordPress.');
+}
+</script>
+</body>
+</html>

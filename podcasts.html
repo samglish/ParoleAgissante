@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Podcasts — Parole Agissante</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── PODCASTS PAGE ONLY ─────────────────────────────────── */
+
+    /* Player principal */
+    .main-player {
+      margin: 32px 40px 0;
+      background: linear-gradient(135deg, var(--navy-mid), #0C1829);
+      border: 1px solid var(--gold-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .mp-header {
+      padding: 28px 32px 24px;
+      display: flex; gap: 28px; align-items: flex-start;
+      border-bottom: 1px solid rgba(201,151,26,0.15);
+    }
+    .mp-cover {
+      width: 110px; height: 110px; flex-shrink: 0;
+      background: linear-gradient(145deg, #1a0505, #5C1A1A, #C9971A);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 4px 6px 20px rgba(0,0,0,0.4);
+      position: relative; overflow: hidden;
+    }
+    .mp-cover::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 4px,
+        rgba(255,255,255,0.03) 4px, rgba(255,255,255,0.03) 5px
+      );
+    }
+    .mp-cover-icon {
+      font-family: var(--serif);
+      font-size: 36px; color: rgba(245,208,96,0.7);
+      position: relative; z-index: 1;
+    }
+    .mp-info { flex: 1; }
+    .mp-cat  { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .mp-title { font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--cream); line-height: 1.25; margin-bottom: 6px; }
+    .mp-ref   { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+    .mp-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .mp-btn-play {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 4px 16px rgba(201,151,26,0.3);
+    }
+    .mp-btn-play:hover { background: var(--gold-light); transform: scale(1.05); }
+    .mp-btn-play svg { width: 18px; height: 18px; fill: var(--navy); margin-left: 3px; }
+    .mp-btn-skip {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .mp-btn-skip:hover { background: rgba(201,151,26,0.3); }
+    .mp-btn-skip svg { width: 14px; height: 14px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .mp-time { font-size: 11px; color: var(--muted); letter-spacing: 0.05em; margin-left: 6px; }
+
+    .mp-progress-wrap { padding: 16px 32px 24px; }
+    .mp-bar-bg {
+      height: 4px; background: rgba(201,151,26,0.18); border-radius: 2px;
+      cursor: pointer; position: relative; margin-bottom: 8px;
+    }
+    .mp-bar-fill { height: 100%; width: 28%; background: var(--gold); border-radius: 2px; position: relative; transition: width 0.1s; }
+    .mp-bar-fill::after {
+      content: ''; position: absolute; right: -6px; top: 50%;
+      transform: translateY(-50%);
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--gold-light); box-shadow: 0 0 8px rgba(201,151,26,0.5);
+    }
+    .mp-times { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); }
+
+    /* Plateformes */
+    .platforms-row {
+      margin: 0 40px 0;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(201,151,26,0.15);
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .platforms-label { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+    .platform-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--navy-card); border: 1px solid rgba(201,151,26,0.15);
+      border-radius: 20px; padding: 6px 14px;
+      font-size: 11px; font-weight: 600; color: var(--cream-dim);
+      cursor: pointer; transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .platform-pill:hover { border-color: var(--gold); color: var(--gold-light); }
+    .platform-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-spotify  { background: #1DB954; }
+    .dot-apple    { background: #FC3C44; }
+    .dot-youtube  { background: #FF0000; }
+    .dot-rss      { background: var(--gold); }
+
+    /* Liste épisodes */
+    .episodes-section { padding: 0 40px 48px; }
+    .episodes-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .episode-item {
+      background: var(--navy-card);
+      border: 1px solid rgba(201,151,26,0.12);
+      border-radius: 8px; padding: 16px 20px;
+      display: flex; align-items: center; gap: 18px;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .episode-item::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: var(--gold); opacity: 0; transition: opacity 0.2s;
+    }
+    .episode-item:hover { border-color: rgba(201,151,26,0.4); background: #0F1E38; }
+    .episode-item:hover::before { opacity: 1; }
+    .episode-item.active { border-color: rgba(201,151,26,0.45); background: #0F1E38; }
+    .episode-item.active::before { opacity: 1; }
+
+    .ep-num {
+      font-family: var(--serif); font-size: 13px; font-weight: 700;
+      color: rgba(201,151,26,0.4); width: 28px; flex-shrink: 0; text-align: center;
+    }
+    .ep-play {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.2s, transform 0.15s;
+    }
+    .episode-item:hover .ep-play,
+    .episode-item.active .ep-play { background: var(--gold); border-color: var(--gold); }
+    .ep-play svg { width: 13px; height: 13px; fill: var(--navy); margin-left: 2px; }
+    .episode-item.active .ep-play svg,
+    .episode-item:hover .ep-play svg { fill: var(--navy); }
+
+    .ep-info { flex: 1; min-width: 0; }
+    .ep-cat   { font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .ep-title { font-size: 13px; font-weight: 600; color: var(--cream); line-height: 1.35; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ep-ref   { font-size: 10px; color: var(--muted); }
+    .ep-meta  { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+    .ep-dur   { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: 0.04em; }
+    .ep-date  { font-size: 9px; color: var(--muted); }
+    .ep-dl {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+    }
+    .ep-dl:hover { background: var(--gold); }
+    .ep-dl svg { width: 12px; height: 12px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .ep-dl:hover svg { stroke: var(--navy); }
+
+    /* RSS Info */
+    .rss-box {
+      margin: 0 40px 40px;
+      background: var(--navy-card);
+      border: 1px solid var(--gold-border);
+      border-radius: 8px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+    .rss-icon {
+      width: 44px; height: 44px; border-radius: 8px;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .rss-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .rss-text { flex: 1; }
+    .rss-title { font-size: 13px; font-weight: 600; color: var(--cream); margin-bottom: 3px; }
+    .rss-url   { font-size: 10px; color: var(--muted); font-family: monospace; letter-spacing: 0.03em; }
+    .rss-copy  {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--gold-dim); border: 1px solid var(--gold-border);
+      color: var(--gold); padding: 7px 14px; border-radius: 4px; cursor: pointer;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .rss-copy:hover { background: var(--gold); color: var(--navy); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main-player   { margin: 24px 20px 0; }
+      .mp-header     { padding: 20px; flex-direction: column; gap: 16px; }
+      .mp-progress-wrap { padding: 14px 20px 20px; }
+      .platforms-row { margin: 0 20px; }
+      .episodes-section, .rss-box { padding-left: 20px; padding-right: 20px; }
+      .rss-box { margin: 0 20px 32px; }
+      .ep-title { font-size: 12px; }
+      .ep-num   { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <img src="logo.png" alt="Parole Agissante"/>
+    <div>
+      <div class="nav-logo-text">Parole Agissante</div>
+      <div class="nav-logo-sub">Église de Toutes les Nations</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="blog.html">Enseignements</a>
+    <a href="podcasts.html" class="active">Podcasts</a>
+    <a href="librairie.html">Librairie</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <button class="nav-cta">Soutenir la mission</button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-inner">
+    <div class="breadcrumb"><a href="index.html">Accueil</a><span>›</span><span>Podcasts</span></div>
+    <h1>Les <em>Podcasts</em><br>Parole Agissante</h1>
+    <p>Écoutez les prédications, méditations et enseignements du Pasteur Romuald Guy AMBENA, où que vous soyez, sur toutes les plateformes.</p>
+    <div class="hero-stats">
+      <div><div class="stat-val">24+</div><div class="stat-lbl">Épisodes</div></div>
+      <div><div class="stat-val">4</div><div class="stat-lbl">Plateformes</div></div>
+      <div><div class="stat-val">Gratuit</div><div class="stat-lbl">Accès libre</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAYER PRINCIPAL -->
+<div class="main-player">
+  <div class="mp-header">
+    <div class="mp-cover">
+      <div class="mp-cover-icon">P</div>
+    </div>
+    <div class="mp-info">
+      <div class="mp-cat">Prédications · Actes 20 : 7-12</div>
+      <div class="mp-title" id="playerTitle">Le danger d'avoir un pied dedans et un pied dehors</div>
+      <div class="mp-ref" id="playerRef">Pasteur Romuald Guy AMBENA</div>
+      <div class="mp-controls">
+        <div class="mp-btn-skip" onclick="changeEp(-1)">
+          <svg viewBox="0 0 24 24"><polyline points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+        </div>
+        <div class="mp-btn-play" id="playBtn" onclick="togglePlay()">
+          <svg id="playIcon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <div class="mp-btn-skip" onclick="changeEp(1)">
+          <svg viewBox="0 0 24 24"><polyline points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+        </div>
+        <span class="mp-time" id="mpTime">00:00 / 24:15</span>
+      </div>
+    </div>
+  </div>
+  <div class="mp-progress-wrap">
+    <div class="mp-bar-bg" id="progressBar" onclick="seekAudio(event)">
+      <div class="mp-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="mp-times">
+      <span id="currentTime">00:00</span>
+      <span id="totalTime">24:15</span>
+    </div>
+  </div>
+</div>
+
+<!-- PLATEFORMES -->
+<div class="platforms-row">
+  <span class="platforms-label">Disponible sur</span>
+  <a class="platform-pill" href="#" target="_blank">
+    <div class="platform-dot dot-spotify"></div>Spotify
+  </a>
+  <a class="platform-pill" href="#" target="_blank">
+    <div class="platform-dot dot-apple"></div>Apple Podcasts
+  </a>
+  <a class="platform-pill" href="#" target="_blank">
+    <div class="platform-dot dot-youtube"></div>YouTube
+  </a>
+  <a class="platform-pill" href="#" target="_blank">
+    <div class="platform-dot dot-rss"></div>Flux RSS
+  </a>
+</div>
+
+<!-- EPISODES -->
+<div class="sec-divider">
+  <div class="sec-line"></div>
+  <div class="sec-title">Tous les épisodes</div>
+  <div class="sec-line"></div>
+</div>
+
+<div class="episodes-section">
+  <div class="episodes-list" id="episodesList"></div>
+</div>
+
+<!-- BOITE RSS -->
+<div class="rss-box">
+  <div class="rss-icon">
+    <svg viewBox="0 0 24 24"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+  </div>
+  <div class="rss-text">
+    <div class="rss-title">Abonnez-vous via votre application de podcasts</div>
+    <div class="rss-url">https://parole-agissante.org/feed/podcast</div>
+  </div>
+  <button class="rss-copy" onclick="copyRSS()">Copier le lien RSS</button>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="nl-strip">
+  <div class="nl-text">
+    <div class="nl-title">Ne manquez aucun épisode</div>
+    <p class="nl-sub">Inscrivez-vous et recevez une alerte dès qu'un nouvel épisode est publié, avec le verset du jour en cadeau.</p>
+  </div>
+  <div class="nl-form">
+    <input class="nl-input" type="email" placeholder="Votre adresse e-mail"/>
+    <button class="nl-btn">Je m'inscris</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer-simple">
+  <div>
+    <div class="footer-brand">Parole Agissante</div>
+    <div class="footer-sub">Église de Toutes les Nations · GRAM Ministries · Ébolowa, Cameroun</div>
+  </div>
+  <div class="footer-links">
+    <a href="index.html">Accueil</a>
+    <a href="blog.html">Enseignements</a>
+    <a href="librairie.html">Librairie</a>
+    <a href="videos.html">Vidéos</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</footer>
+
+<script>
+const EPISODES = [
+  { num:1,  cat:'Prédications',    title:'Le danger d\'avoir un pied dedans et un pied dehors', ref:'Actes 20 : 7-12',      dur:'24:15', date:'28 mars 2023',  active:true },
+  { num:2,  cat:'Méditations',     title:'Au coeur de la Parole — L\'ennemi de l\'intérieur',   ref:'Matthieu 26 : 17-30',  dur:'18:42', date:'27 mars 2023',  active:false },
+  { num:3,  cat:'Foi et Doctrine', title:'Reçois la puissance pour le succès',                  ref:'Psaume 105 : 17-22',   dur:'31:08', date:'15 mars 2023',  active:false },
+  { num:4,  cat:'Prières',         title:'Prière de bénédictions — Intercession puissante',     ref:'Nombres 6 : 22-27',    dur:'12:50', date:'5 mars 2023',   active:false },
+  { num:5,  cat:'Méditations',     title:'La Rédemption crée en nous le besoin qu\'elle satisfait', ref:'Romains 8 : 1-11', dur:'22:35', date:'20 fév. 2023', active:false },
+  { num:6,  cat:'Confessions',     title:'Confessions pour la victoire — Déclarations de foi',  ref:'Romains 10 : 9-10',    dur:'09:20', date:'14 fév. 2023', active:false },
+  { num:7,  cat:'Enseignements',   title:'La Consécration Perpétuelle — Marcher avec Dieu',     ref:'Hébreux 12 : 1-2',    dur:'28:10', date:'1 fév. 2023',  active:false },
+  { num:8,  cat:'Foi et Doctrine', title:'La puissance de Dieu dans la faiblesse humaine',       ref:'2 Corinthiens 12 : 9', dur:'19:55', date:'18 jan. 2023', active:false },
+  { num:9,  cat:'Combat spirituel','title':'Votre espérance en Dieu est-elle sur le point de s\'évanouir ?', ref:'Psaume 42', dur:'16:30', date:'10 jan. 2023', active:false },
+  { num:10, cat:'Famille',         title:'La pureté : une armure pour notre génération',          ref:'1 Corinthiens 6 : 18-20', dur:'21:45', date:'2 jan. 2023', active:false },
+  { num:11, cat:'Méditations',     title:'Tout est accompli — Méditation sur la croix',           ref:'Jean 19 : 30',         dur:'14:20', date:'25 déc. 2022', active:false },
+  { num:12, cat:'Enseignements',   title:'La Nécessité de la Sanctification',                     ref:'1 Thessaloniciens 4:3', dur:'26:00', date:'12 déc. 2022', active:false },
+  { num:13, cat:'Prières',         title:'Prière pour recevoir le baptême du Saint-Esprit',       ref:'Actes 2 : 1-4',        dur:'11:15', date:'5 déc. 2022',  active:false },
+  { num:14, cat:'Foi et Doctrine', title:'Comment acquérir la foi ? — Fondements bibliques',      ref:'Romains 10 : 17',      dur:'33:40', date:'20 nov. 2022', active:false },
+  { num:15, cat:'Combat spirituel','title':'Les douze règles du combat spirituel',                 ref:'Éphésiens 6 : 10-18',  dur:'38:15', date:'8 nov. 2022',  active:false },
+];
+
+let currentEp = 0;
+let isPlaying = false;
+let progress  = 28;
+let timer     = null;
+
+function renderEpisodes() {
+  const list = document.getElementById('episodesList');
+  list.innerHTML = '';
+  EPISODES.forEach((ep, i) => {
+    const div = document.createElement('div');
+    div.className = 'episode-item' + (i === currentEp ? ' active' : '');
+    div.id = 'ep-' + i;
+    div.innerHTML = `
+      <div class="ep-num">${ep.num}</div>
+      <div class="ep-play" onclick="selectEp(${i})">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </div>
+      <div class="ep-info">
+        <div class="ep-cat">${ep.cat}</div>
+        <div class="ep-title">${ep.title}</div>
+        <div class="ep-ref">${ep.ref}</div>
+      </div>
+      <div class="ep-meta">
+        <div class="ep-dur">${ep.dur}</div>
+        <div class="ep-date">${ep.date}</div>
+      </div>
+      <div class="ep-dl" title="Télécharger">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function selectEp(i) {
+  currentEp = i;
+  const ep = EPISODES[i];
+  document.getElementById('playerTitle').textContent = ep.title;
+  document.getElementById('playerRef').textContent   = ep.ref + ' · ' + ep.cat;
+  document.getElementById('totalTime').textContent   = ep.dur;
+  document.getElementById('mpTime').textContent      = '00:00 / ' + ep.dur;
+  progress = 0;
+  updateBar();
+  isPlaying = true;
+  updatePlayBtn();
+  startTimer();
+  renderEpisodes();
+}
+
+function changeEp(dir) {
+  const next = currentEp + dir;
+  if (next >= 0 && next < EPISODES.length) selectEp(next);
+}
+
+function togglePlay() {
+  isPlaying = !isPlaying;
+  updatePlayBtn();
+  if (isPlaying) startTimer(); else clearInterval(timer);
+}
+
+function updatePlayBtn() {
+  const icon = document.getElementById('playIcon');
+  if (isPlaying) {
+    icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+  } else {
+    icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+  }
+}
+
+function startTimer() {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    if (progress < 100) { progress += 0.15; updateBar(); }
+    else { clearInterval(timer); isPlaying = false; updatePlayBtn(); }
+  }, 200);
+}
+
+function updateBar() {
+  document.getElementById('progressFill').style.width = progress + '%';
+}
+
+function seekAudio(e) {
+  const bar   = document.getElementById('progressBar');
+  const rect  = bar.getBoundingClientRect();
+  progress    = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+  updateBar();
+}
+
+function copyRSS() {
+  navigator.clipboard.writeText('https://parole-agissante.org/feed/podcast').then(() => {
+    const btn = document.querySelector('.rss-copy');
+    btn.textContent = 'Copié !';
+    btn.style.background = 'var(--gold)';
+    btn.style.color = 'var(--navy)';
+    setTimeout(() => { btn.textContent = 'Copier le lien RSS'; btn.style.background = ''; btn.style.color = ''; }, 2000);
+  });
+}
+
+renderEpisodes();
+</script>
+</body>
+</html>
